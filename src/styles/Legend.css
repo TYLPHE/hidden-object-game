@@ -1,0 +1,13 @@
+.legend {
+  border-bottom: 1px solid;
+  flex-grow: 1;
+  text-align: center;
+}
+.legend::after {
+  content: '+';
+  color: white;
+  margin-left: .5rem;
+}
+.active:after {
+  content: "-";
+}

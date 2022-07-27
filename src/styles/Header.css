@@ -1,0 +1,14 @@
+header {
+  border-bottom: 1px solid;
+  text-align: center;
+}
+
+.logo {
+  color: white;
+}
+.logo:link {
+  text-decoration: none;
+}
+.logo:hover {
+  text-decoration: underline;
+}
