@@ -1,0 +1,25 @@
+.image {
+  width: 100vw;
+  cursor: none;
+
+}
+.absolute {
+  cursor: none;
+  position: absolute;
+  color: black;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-repeat: no-repeat;
+  background-size: 2200px;
+  background-color: black;
+}
+.center {
+  transform: translate(-50%, -50%);
+}
+.zoomed {
+  border-radius: 50%;
+  border: 1px solid black;
+}
