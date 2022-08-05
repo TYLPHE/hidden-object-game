@@ -1,7 +1,7 @@
 .image {
   width: 100vw;
   cursor: none;
-
+  user-select: none;
 }
 .absolute {
   cursor: none;

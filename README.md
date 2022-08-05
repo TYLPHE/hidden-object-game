@@ -27,3 +27,21 @@ if (yScreen < .5) {
 if (yScreen > .5) {
   setPosYOffset( -50 * ( e.pageY - ( windowHeight / 2 ) ) / ( windowHeight / 2 ) )
 ```
+
+TODO: more to come
+
+### Reading the database
+I am using the Cloud Firestore to store the hidden object's coordinates. The goal is compare the user's mouse coordinates with the data stored in Cloud Firestore. I did not have enough permission to get data with the default rules. [This page helped me update the rules to allow read, but deny rewriting the database](https://firebase.google.com/docs/firestore/security/rules-structure)
+
+It's a simple update but it's a good first step. My rules look like this:
+```
+rules_version = '2';
+service cloud.firestore {
+    match /{document=**} {
+    	// https://firebase.google.com/docs/rules/basics?authuser=0&hl=en#cloud-firestore
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}
+```

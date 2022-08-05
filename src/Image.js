@@ -1,8 +1,12 @@
-import { getValue } from '@testing-library/user-event/dist/utils/index.js';
 import { initializeApp } from 'firebase/app';
 import { getDownloadURL, ref, getStorage } from 'firebase/storage';
 import { useEffect, useState } from 'react';
-import './styles/Image.css'
+import { getFirestore, collection, getDocs, doc, getDoc } from 'firebase/firestore';
+import './styles/Image.css';
+
+import { getDatabase } from 'firebase/database'
+
+
 
 function Image() {
   const [url, setUrl] = useState(null);
@@ -12,16 +16,32 @@ function Image() {
   const [posY, setPosY] = useState(null);
   const [posXOffset, setPosXOffset] = useState(0);
   const [posYOffset, setPosYOffset] = useState(0);
+  const [posXAdjusted, setPosXAdjusted] = useState(0);
+  const [posYAdjusted, setPosYAdjusted] = useState(0);
   const [windowWidth, setWindowWidth] = useState(null);
   const [windowHeight, setWindowHeight] = useState(null);
   const [magDisp, setMagDisp] = useState(false);
-
-  // size of the magnifying glass in px units
-  const magSize = 100;
-
   useEffect(() => {
     getUrl();
   }, []);
+
+  async function getWaldoPos() {
+    //testing reading of database
+    const firebaseConfig = {
+      apiKey: "AIzaSyBe9KEI1KB8225x7aMvCoRY0MmGIaR6suM",
+      authDomain: "hidden-object-game-c2e92.firebaseapp.com",
+      projectId: "hidden-object-game-c2e92",
+      storageBucket: "hidden-object-game-c2e92.appspot.com",
+      messagingSenderId: "760584207608",
+      appId: "1:760584207608:web:82e22f6801eb55af46cf0d"
+    }
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const docRef = doc(db, 'solutions', 'waldo')
+    const docSnap = await getDoc(docRef)
+    const object = docSnap.data()
+    return object;
+  }
 
   async function getUrl() {
     const firebaseConfig = {
@@ -44,29 +64,52 @@ function Image() {
     const xScreen = e.pageX/windowWidth;
     const yScreen = e.pageY/windowHeight;
     if (xScreen < .5) {
-      setPosXOffset( 50 - 50 * e.pageX / ( windowWidth / 2 ) )
+      const offset = 50 - 50 * e.pageX / ( windowWidth / 2 );
+      setPosXOffset(offset);
+      setPosXAdjusted( ( e.pageX + offset ) / windowWidth );
     }
     if (xScreen > .5) {
-      setPosXOffset( -50 * ( e.pageX - ( windowWidth / 2 ) ) / ( windowWidth / 2 ) )
+      const offset = -50 * ( e.pageX - ( windowWidth / 2 ) ) / ( windowWidth / 2 );
+      setPosXOffset(offset);
+      setPosXAdjusted( (e.pageX + offset ) / windowWidth );
     }
     if (yScreen < .5) {
-      setPosYOffset( 50 - 50 * e.pageY / ( windowHeight / 2 ) )
+      const offset = 50 - 50 * e.pageY / ( windowHeight / 2 );
+      setPosYOffset(offset);
+      setPosYAdjusted( ( e.pageY + offset ) / windowWidth );
     }
     if (yScreen > .5) {
-      setPosYOffset( -50 * ( e.pageY - ( windowHeight / 2 ) ) / ( windowHeight / 2 ) )
+      const offset = -50 * ( e.pageY - ( windowHeight / 2 ) ) / ( windowHeight / 2 )
+      setPosYOffset(offset);
+      setPosYAdjusted( ( e.pageY + offset ) / windowWidth );
     }
     setPosX(e.pageX);
     setPosY(e.pageY);
+
+    // adjusted value for database
+    // console.log(posXAdjusted, posYAdjusted)
     setMagDisp(true);
-    // console.log(`x: ${( posX/windowWidth ) * 100}%`, `y: ${( posY/windowHeight ) * 100}%`)
-    console.log(posX, posY, posXOffset, posYOffset)
   }
 
   function onImgLoad({ target: img }) {
     const { offsetHeight, offsetWidth } = img;
     setWindowHeight(offsetHeight);
     setWindowWidth(offsetWidth);
-    console.log(offsetWidth, offsetHeight)
+  }
+
+  async function checkPos() {
+    const waldoPos = await getWaldoPos();
+    console.log(waldoPos)
+    if (
+      posXAdjusted > waldoPos.xMin &&
+      posXAdjusted < waldoPos.xMax &&
+      posYAdjusted > waldoPos.yMin &&
+      posYAdjusted < waldoPos.yMax
+    ) {
+      console.log('waldo found')
+    } else {
+      console.log(`not found`)
+    }
   }
 
   if (isLoading) {
@@ -85,11 +128,10 @@ function Image() {
                 backgroundImage: `url( ${ url } )`,
                 backgroundPositionX: `calc( ${( posX/windowWidth ) * 100}% + ${ posXOffset }px )`,
                 backgroundPositionY: `calc( ${( posY/windowHeight ) * 100 }% + ${ posYOffset }px )`
-                // backgroundPositionX: `calc( ${( posX/windowWidth ) * 100}%)`,
-                // backgroundPositionY: `calc( ${( posY/windowHeight ) * 100 }%)`
               }
             }
             onMouseMove={e => XYPos(e)}
+            onClick={() => checkPos()}
           />
           <img 
             alt='waldo' 
