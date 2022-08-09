@@ -3,10 +3,7 @@ import { getDownloadURL, ref, getStorage } from 'firebase/storage';
 import { useEffect, useState } from 'react';
 import { getFirestore, collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import './styles/Image.css';
-
 import { getDatabase } from 'firebase/database'
-
-
 
 function Image() {
   const [url, setUrl] = useState(null);
@@ -16,32 +13,13 @@ function Image() {
   const [posY, setPosY] = useState(null);
   const [posXOffset, setPosXOffset] = useState(0);
   const [posYOffset, setPosYOffset] = useState(0);
-  const [posXAdjusted, setPosXAdjusted] = useState(0);
-  const [posYAdjusted, setPosYAdjusted] = useState(0);
   const [windowWidth, setWindowWidth] = useState(null);
   const [windowHeight, setWindowHeight] = useState(null);
   const [magDisp, setMagDisp] = useState(false);
+
   useEffect(() => {
     getUrl();
   }, []);
-
-  async function getWaldoPos() {
-    //testing reading of database
-    const firebaseConfig = {
-      apiKey: "AIzaSyBe9KEI1KB8225x7aMvCoRY0MmGIaR6suM",
-      authDomain: "hidden-object-game-c2e92.firebaseapp.com",
-      projectId: "hidden-object-game-c2e92",
-      storageBucket: "hidden-object-game-c2e92.appspot.com",
-      messagingSenderId: "760584207608",
-      appId: "1:760584207608:web:82e22f6801eb55af46cf0d"
-    }
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const docRef = doc(db, 'solutions', 'waldo')
-    const docSnap = await getDoc(docRef)
-    const object = docSnap.data()
-    return object;
-  }
 
   async function getUrl() {
     const firebaseConfig = {
@@ -59,6 +37,29 @@ function Image() {
     return setUrl(url);
   }
 
+  async function getWaldoPos() {
+    //testing reading of database
+    const firebaseConfig = {
+      apiKey: "AIzaSyBe9KEI1KB8225x7aMvCoRY0MmGIaR6suM",
+      authDomain: "hidden-object-game-c2e92.firebaseapp.com",
+      projectId: "hidden-object-game-c2e92",
+      storageBucket: "hidden-object-game-c2e92.appspot.com",
+      messagingSenderId: "760584207608",
+      appId: "1:760584207608:web:82e22f6801eb55af46cf0d"
+    }
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const docRef = doc(db, 'solutions', 'waldo')
+    const docSnap = await getDoc(docRef)
+    const object = docSnap.data();
+
+    const testRef = doc(db, 'solutions', 'wenda');
+    const testSnap = await getDoc(testRef);
+    const wenda = testSnap.data();
+    console.log(wenda);
+    return object;
+  }
+
   function XYPos(e) {
     setMagDisp(false);
     const xScreen = e.pageX/windowWidth;
@@ -66,22 +67,18 @@ function Image() {
     if (xScreen < .5) {
       const offset = 50 - 50 * e.pageX / ( windowWidth / 2 );
       setPosXOffset(offset);
-      setPosXAdjusted( ( e.pageX + offset ) / windowWidth );
     }
     if (xScreen > .5) {
       const offset = -50 * ( e.pageX - ( windowWidth / 2 ) ) / ( windowWidth / 2 );
       setPosXOffset(offset);
-      setPosXAdjusted( (e.pageX + offset ) / windowWidth );
     }
     if (yScreen < .5) {
       const offset = 50 - 50 * e.pageY / ( windowHeight / 2 );
       setPosYOffset(offset);
-      setPosYAdjusted( ( e.pageY + offset ) / windowWidth );
     }
     if (yScreen > .5) {
       const offset = -50 * ( e.pageY - ( windowHeight / 2 ) ) / ( windowHeight / 2 )
       setPosYOffset(offset);
-      setPosYAdjusted( ( e.pageY + offset ) / windowWidth );
     }
     setPosX(e.pageX);
     setPosY(e.pageY);
@@ -98,17 +95,19 @@ function Image() {
   }
 
   async function checkPos() {
-    const waldoPos = await getWaldoPos();
-    console.log(waldoPos)
+    const xClickPos = posX/windowWidth;
+    const yClickPos = posY/windowHeight;
+    const waldoPosition = await getWaldoPos();
+    console.log(waldoPosition);
     if (
-      posXAdjusted > waldoPos.xMin &&
-      posXAdjusted < waldoPos.xMax &&
-      posYAdjusted > waldoPos.yMin &&
-      posYAdjusted < waldoPos.yMax
+      xClickPos > waldoPosition.xMin &&
+      xClickPos < waldoPosition.xMax &&
+      yClickPos > waldoPosition.yMin &&
+      yClickPos < waldoPosition.yMax
     ) {
-      console.log('waldo found')
+      console.log('waldo found', xClickPos, yClickPos);
     } else {
-      console.log(`not found`)
+      console.log(`not found`, xClickPos, yClickPos)
     }
   }
 

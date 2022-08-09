@@ -23,3 +23,13 @@
   border-radius: 50%;
   border: 1px solid black;
 }
+.outline {
+  position: absolute;
+  border: 1px solid magenta;
+  color: white;
+}
+.top-left, .top-right, .bottom-left, .bottom-right {
+  position: absolute;
+  border: 10px solid yellow;
+  width: 10px;
+}

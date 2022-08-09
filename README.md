@@ -45,3 +45,4 @@ service cloud.firestore {
   }
 }
 ```
+TODO: read this https://blog.logrocket.com/how-to-use-react-hooks-firebase-firestore/
