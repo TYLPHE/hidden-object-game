@@ -5,6 +5,12 @@ import { getFirestore, collection, getDocs, doc, getDoc } from 'firebase/firesto
 import './styles/Image.css';
 import { getDatabase } from 'firebase/database'
 
+const coords = {
+  waldo: {},
+  wenda: {},
+  wizard: {},
+}
+
 function Image() {
   const [url, setUrl] = useState(null);
   const [isLoading, setLoading] = useState(true);
@@ -49,15 +55,12 @@ function Image() {
     }
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const docRef = doc(db, 'solutions', 'waldo')
-    const docSnap = await getDoc(docRef)
-    const object = docSnap.data();
 
-    const testRef = doc(db, 'solutions', 'wenda');
-    const testSnap = await getDoc(testRef);
-    const wenda = testSnap.data();
-    console.log(wenda);
-    return object;
+    for (let key in coords) {
+      const docRef = doc(db, 'solutions', key);
+      const docSnap = await getDoc(docRef);
+      coords[key] = docSnap.data();
+    }
   }
 
   function XYPos(e) {
@@ -95,19 +98,19 @@ function Image() {
   }
 
   async function checkPos() {
+    await getWaldoPos();
     const xClickPos = posX/windowWidth;
     const yClickPos = posY/windowHeight;
-    const waldoPosition = await getWaldoPos();
-    console.log(waldoPosition);
-    if (
-      xClickPos > waldoPosition.xMin &&
-      xClickPos < waldoPosition.xMax &&
-      yClickPos > waldoPosition.yMin &&
-      yClickPos < waldoPosition.yMax
-    ) {
-      console.log('waldo found', xClickPos, yClickPos);
-    } else {
-      console.log(`not found`, xClickPos, yClickPos)
+
+    for (let key in coords) {
+      if (
+        xClickPos > coords[key].xMin &&
+        xClickPos < coords[key].xMax &&
+        yClickPos > coords[key].yMin &&
+        yClickPos < coords[key].yMax
+      ) {
+        return console.log(`${key} found`);
+      }
     }
   }
 
