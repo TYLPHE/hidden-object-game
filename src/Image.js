@@ -1,15 +1,14 @@
-import { initializeApp } from 'firebase/app';
-import { getDownloadURL, ref, getStorage } from 'firebase/storage';
 import { useEffect, useState } from 'react';
-import { getFirestore, collection, getDocs, doc, getDoc } from 'firebase/firestore';
+import helper from './helper';
 import './styles/Image.css';
-import { getDatabase } from 'firebase/database'
 
 const coords = {
   waldo: {},
   wenda: {},
   wizard: {},
 }
+
+helper.getSolutions(coords)
 
 function Image() {
   const [url, setUrl] = useState(null);
@@ -24,44 +23,8 @@ function Image() {
   const [magDisp, setMagDisp] = useState(false);
 
   useEffect(() => {
-    getUrl();
+    helper.getUrl(setUrl, setLoading)
   }, []);
-
-  async function getUrl() {
-    const firebaseConfig = {
-      apiKey: "AIzaSyBe9KEI1KB8225x7aMvCoRY0MmGIaR6suM",
-      authDomain: "hidden-object-game-c2e92.firebaseapp.com",
-      projectId: "hidden-object-game-c2e92",
-      storageBucket: "hidden-object-game-c2e92.appspot.com",
-      messagingSenderId: "760584207608",
-      appId: "1:760584207608:web:82e22f6801eb55af46cf0d"
-    }
-    const app = initializeApp(firebaseConfig);
-    const storage = getStorage(app)
-    const url = await getDownloadURL(ref(storage, 'images/waldo1.jpg'));
-    setLoading(false)
-    return setUrl(url);
-  }
-
-  async function getWaldoPos() {
-    //testing reading of database
-    const firebaseConfig = {
-      apiKey: "AIzaSyBe9KEI1KB8225x7aMvCoRY0MmGIaR6suM",
-      authDomain: "hidden-object-game-c2e92.firebaseapp.com",
-      projectId: "hidden-object-game-c2e92",
-      storageBucket: "hidden-object-game-c2e92.appspot.com",
-      messagingSenderId: "760584207608",
-      appId: "1:760584207608:web:82e22f6801eb55af46cf0d"
-    }
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    for (let key in coords) {
-      const docRef = doc(db, 'solutions', key);
-      const docSnap = await getDoc(docRef);
-      coords[key] = docSnap.data();
-    }
-  }
 
   function XYPos(e) {
     setMagDisp(false);
@@ -92,15 +55,16 @@ function Image() {
   }
 
   function onImgLoad({ target: img }) {
+    console.log(img);
     const { offsetHeight, offsetWidth } = img;
     setWindowHeight(offsetHeight);
     setWindowWidth(offsetWidth);
   }
 
-  async function checkPos() {
-    await getWaldoPos();
+  function checkPos() {
     const xClickPos = posX/windowWidth;
     const yClickPos = posY/windowHeight;
+    let result = 'no match';
 
     for (let key in coords) {
       if (
@@ -109,9 +73,10 @@ function Image() {
         yClickPos > coords[key].yMin &&
         yClickPos < coords[key].yMax
       ) {
-        return console.log(`${key} found`);
+        result = key;
       }
     }
+    return console.log(result);
   }
 
   if (isLoading) {
