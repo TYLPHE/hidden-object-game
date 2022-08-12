@@ -15,12 +15,24 @@ const helper = {
     return initializeApp(firebaseConfig);
   },
 
-  // gets image from firebase
-  getUrl: async (setUrl, setLoading) => {
-    const storage = getStorage(helper.app());
-    const url = await getDownloadURL(ref(storage, 'images/waldo1.jpg'));
-    setLoading(false);
-    return setUrl(url);
+  // input mouse (x, y), img (x, y), coords to find hidden object
+  checkWin: (x, y, width, height, coords) => {
+    const xValue = x/width;
+    const yValue = y/height;
+    let result = 'no match'
+
+    for (let key in coords) {
+      if (
+        xValue > coords[key].xMin &&
+        xValue < coords[key].xMax &&
+        yValue > coords[key].yMin &&
+        yValue < coords[key].yMax
+      ) {
+        result = key
+      }
+    }
+
+    return result;
   },
 
   // get positions of all characters
@@ -33,8 +45,14 @@ const helper = {
       const docSnap = await getDoc(docRef);
       coords[key] = docSnap.data();
     }
+  },
 
-    console.log('helper.getSolutions()')
+  // gets image from firebase. setUrl and setLoading in Image.js
+  getUrl: async (setUrl, setLoading) => {
+    const storage = getStorage(helper.app());
+    const url = await getDownloadURL(ref(storage, 'images/waldo1.jpg'));
+    setLoading(false);
+    return setUrl(url);
   },
 }
 
