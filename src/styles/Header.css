@@ -1,10 +1,17 @@
 header {
   border-bottom: 1px solid;
   text-align: center;
-  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.382);
+
+  z-index: 1;
 }
 
 .logo {
