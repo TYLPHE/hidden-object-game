@@ -16,16 +16,16 @@ My solution is to split each image into quadrants and offset the magnifying glas
 
 ```javascript
 if (xScreen < .5) {
-  setPosXOffset( 50 - 50 * e.pageX / ( windowWidth / 2 ) )
+  setPosXOffset( 50 - 50 * e.pageX / ( imgWidth / 2 ) )
 }
 if (xScreen > .5) {
-  setPosXOffset( -50 * ( e.pageX - ( windowWidth / 2 ) ) / ( windowWidth / 2 ) )
+  setPosXOffset( -50 * ( e.pageX - ( imgWidth / 2 ) ) / ( imgWidth / 2 ) )
 }
 if (yScreen < .5) {
-  setPosYOffset( 50 - 50 * e.pageY / ( windowHeight / 2 ) )
+  setPosYOffset( 50 - 50 * e.pageY / ( imgHeight / 2 ) )
 }
 if (yScreen > .5) {
-  setPosYOffset( -50 * ( e.pageY - ( windowHeight / 2 ) ) / ( windowHeight / 2 ) )
+  setPosYOffset( -50 * ( e.pageY - ( imgHeight / 2 ) ) / ( imgHeight / 2 ) )
 ```
 
 TODO: more to come
@@ -45,4 +45,16 @@ service cloud.firestore {
   }
 }
 ```
-TODO: read this https://blog.logrocket.com/how-to-use-react-hooks-firebase-firestore/
+
+### Render on window resize
+If the user resizes the window after loading the image, the magnifying glass component will lose its position relative to the main image.
+
+I learned that React does not have a resize event so we need to `window.addEventListener()` from the React component.
+
+I combined using React's `useRef()` from [this guide](https://www.pluralsight.com/guides/re-render-react-component-on-window-resize) and the `window.addEventListener()` [guide](https://bobbyhadz.com/blog/react-get-element-width-ref) to find a solution to my issue.
+
+TODO: expand on this
+
+### Setting a load
+Instead of saving my images in the src folder, I've loaded my images to firebase, creating a URL, and then displaying it on my app. The problem is that my components will render before the image loads. I wanted the image to completely load first and then render the component for a smoother user experience. I found a solution [thanks to this article](https://stackoverflow.com/questions/43115246/how-to-detect-when-a-image-is-loaded-that-is-provided-via-props-and-change-sta).
+

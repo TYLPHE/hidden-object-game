@@ -47,12 +47,11 @@ const helper = {
     }
   },
 
-  // gets image from firebase. setUrl and setLoading in Image.js
-  getUrl: async (setUrl, setLoading) => {
+  // return a url from Firebase Storage
+  getUrl: async (location) => {
     const storage = getStorage(helper.app());
-    const url = await getDownloadURL(ref(storage, 'images/waldo1.jpg'));
-    setLoading(false);
-    return setUrl(url);
+    const url = await getDownloadURL(ref(storage, location));
+    return url;
   },
 }
 

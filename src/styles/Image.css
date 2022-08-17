@@ -1,7 +1,23 @@
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  color: rgba(255, 255, 255, 0.20);
+  font-size: 3vw;
+  animation: fade-in .1s ease-in;
+}
 .image {
   width: 100vw;
   cursor: none;
   user-select: none;
+  transition: 500ms;
+}
+.image-intro {
+  width: 100vw;
+  user-select: none;
+  filter: brightness(25%) blur(10px);
 }
 .absolute {
   cursor: none;
@@ -35,4 +51,10 @@
 }
 .relative {
   position: relative;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0%;
+  }
 }
