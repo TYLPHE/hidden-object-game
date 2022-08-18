@@ -19,15 +19,15 @@
   user-select: none;
   filter: brightness(25%) blur(10px);
 }
-.absolute {
-  cursor: none;
-  position: absolute;
-  color: black;
+.image-selection {
+  user-select: auto;
+  width: 100vw;
+  top: 0;
+  left: 0;
+}
+.magnifier {
   width: 100px;
   height: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background-repeat: no-repeat;
   background-size: 2200px;
   background-color: black;
@@ -51,6 +51,12 @@
 }
 .relative {
   position: relative;
+}
+.absolute {
+  position: absolute;
+}
+.no-cursor {
+  cursor: none;
 }
 
 @keyframes fade-in {

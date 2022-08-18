@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import helper from './helper';
 import Intro from './Intro';
+import Selection from './Selection';
 import './styles/Image.css';
 
 // pull data from Firebase and populate coords object
@@ -11,8 +12,6 @@ const coords = {
   wizard: {},
 }
 helper.getSolutions(coords);
-
-
 
 function Image() {
   const [url, setUrl] = useState(null);
@@ -26,6 +25,8 @@ function Image() {
   const [magnifierDisp, setMagnifierDisp] = useState(false);
   const [seenIntro, setSeenIntro] = useState(false);
   const [displayIntro, setDisplayIntro] = useState(false);
+  const [selectionDisplay, setSelectionDisplay] = useState(false);
+
 
   useEffect(() => {
     async function fetchData() {
@@ -51,7 +52,7 @@ function Image() {
     return () => window.addEventListener('resize', handleResize);
   })
 
-  // adjust magnifying glass image to match mouse position more accurately
+  // adjust magnifying glass's image to match mouse position more accurately
   function magnifyOffset(e) {
     const xScreen = e.pageX / imgWidth;
     const yScreen = ( e.pageY ) / ( imgHeight );
@@ -95,7 +96,10 @@ function Image() {
 
   if (isLoading) {
     return <div className='loading'>Loading Image...</div>;
+
   } else {
+    // after loading, display following scenarios based on states
+    // show intro if user has not yet seen it
     if (!seenIntro) {
       return (
         <div className='relative'>
@@ -106,7 +110,7 @@ function Image() {
           />
           <img
             ref={ref}
-            alt='waldo' 
+            alt='Waldo map' 
             src={url}
             className='image-intro'
             onLoad={(e) => {
@@ -121,12 +125,36 @@ function Image() {
       </div>
       )
     }
+
+    // if user clicks, display Selection component to choose their hidden object
+    if (selectionDisplay) {
+      return (
+        <div>
+          <Selection 
+            top={posY}
+            left={posX}
+            bgUrl={`url( ${ url } )`}
+            bgPosX={`calc( ${( posX / imgWidth ) * 100}% + ${ posXOffset }px )`}
+            bgPosY={`calc( ${( posY / imgHeight ) * 100 }% + ${ posYOffset }px )`}
+            setSelectionDisplay={setSelectionDisplay}
+          />
+          <img
+            ref={ref}
+            alt='Waldo map' 
+            src={url}
+            className='image-selection absolute'
+          />
+        </div>
+      );
+    }
+
+    // show magnifier to find hidden objects. follows mouse on movement
     if (magnifierDisp) {
       return (
         <div>
           <div
             alt='cursor with zoom'
-            className='absolute center zoomed'
+            className='magnifier absolute center zoomed no-cursor'
             style={
               {
                 top: posY, 
@@ -137,11 +165,14 @@ function Image() {
               }
             }
             onMouseMove={e => mousePos(e)}
-            onClick={() => console.log(helper.checkWin(posX, posY, imgWidth, imgHeight, coords))}
+            onClick={() => {
+              console.log(helper.checkWin(posX, posY, imgWidth, imgHeight, coords));
+              setSelectionDisplay(true)
+            }}
           />
           <img
             ref={ref}
-            alt='waldo' 
+            alt='Waldo map' 
             src={url}
             className='image'
             onMouseMove={e => mousePos(e)}
@@ -149,6 +180,8 @@ function Image() {
         </div>
       );
     }
+
+    // initial screen with no mouse positioned on top
     return (
       <div>
         <div
@@ -158,7 +191,7 @@ function Image() {
         />
         <img
           ref={ref}
-          alt='waldo' 
+          alt='Waldo map' 
           src={url}
           className='image'
           onMouseMove={(e) => mousePos(e)}

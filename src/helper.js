@@ -20,7 +20,6 @@ const helper = {
     const xValue = x/width;
     const yValue = y/height;
     let result = 'no match'
-    console.log(xValue, yValue)
     for (let key in coords) {
       if (
         xValue > coords[key].xMin &&
