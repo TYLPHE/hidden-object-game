@@ -16,7 +16,7 @@ const helper = {
   },
 
   // input mouse (x, y), img (x, y), coords to find hidden object
-  checkWin: (x, y, width, height, coords) => {
+  checkFound: (x, y, width, height, coords) => {
     const xValue = x/width;
     const yValue = y/height;
     let result = 'no match'
@@ -32,6 +32,15 @@ const helper = {
     }
 
     return result;
+  },
+
+  // convert seconds to hh-mm-ss format
+  convertSeconds(time) {
+    const converted = new Date(time * 1000).toISOString().substring(11, 19);
+    if (converted[0] === '0' && converted[1] === '0') {
+      return converted.substring(3, 8);
+    }
+    return converted;
   },
 
   // get positions of all characters

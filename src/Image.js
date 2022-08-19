@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import helper from './helper';
 import Intro from './Intro';
 import Selection from './Selection';
+import Summary from './Summary';
 import './styles/Image.css';
 
 // pull data from Firebase and populate coords object
@@ -14,6 +15,7 @@ const coords = {
 helper.getSolutions(coords);
 
 function Image() {
+  const ref = useRef(null);
   const [url, setUrl] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [posX, setPosX] = useState(null);
@@ -22,11 +24,20 @@ function Image() {
   const [posYOffset, setPosYOffset] = useState(0);
   const [imgWidth, setImgWidth] = useState(null);
   const [imgHeight, setImgHeight] = useState(null);
-  const [magnifierDisp, setMagnifierDisp] = useState(false);
+  
   const [seenIntro, setSeenIntro] = useState(false);
   const [displayIntro, setDisplayIntro] = useState(false);
+  
+  const [magnifierDisp, setMagnifierDisp] = useState(false);
   const [selectionDisplay, setSelectionDisplay] = useState(false);
 
+  const [timeToggle, setTimeToggle] = useState(false);
+  const [time, setTime] = useState(0);
+
+  const [waldoFound, setWaldoFound] = useState(false);
+  const [wendaFound, setWendaFound] = useState(false);
+  const [wizardFound, setWizardFound] = useState(false);
+  const [odlawFound, setOdlawFound] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -41,10 +52,19 @@ function Image() {
     }
   }, [url]);
 
-  const ref = useRef(null);
+  useEffect(() => {
+    if (timeToggle) {
+      const interval = setInterval(() => {
+        setTime(prevTime => prevTime + 1);
+      }, 1000)
+      
+      return () => clearInterval(interval); 
+    }
+  }, [time, timeToggle]);
+
   useLayoutEffect(() => {
     function handleResize() {
-      console.log('resized', ref.current.offsetWidth, ref.current.offsetHeight)
+      console.log('resized', ref.current.offsetWidth, ref.current.offsetHeight);
       setImgHeight(ref.current.offsetHeight);
       setImgWidth(ref.current.offsetWidth);
     }
@@ -121,8 +141,24 @@ function Image() {
           <Intro 
             setSeenIntro={setSeenIntro}
             displayIntro={displayIntro}
+            setTimeToggle={setTimeToggle}
           />
       </div>
+      )
+    }
+
+    // user found all objects. display Summary component
+    if (waldoFound && wendaFound && wizardFound && odlawFound) {
+      return (
+        <div>
+          <Summary />
+          <img
+          ref={ref}
+          alt='Waldo map' 
+          src={url}
+          className='image-selection absolute'
+          />
+        </div>
       )
     }
 
@@ -133,10 +169,18 @@ function Image() {
           <Selection 
             top={posY}
             left={posX}
+            imgWidth={imgWidth}
+            imgHeight={imgHeight}
+            coords={coords}
             bgUrl={`url( ${ url } )`}
             bgPosX={`calc( ${( posX / imgWidth ) * 100}% + ${ posXOffset }px )`}
             bgPosY={`calc( ${( posY / imgHeight ) * 100 }% + ${ posYOffset }px )`}
             setSelectionDisplay={setSelectionDisplay}
+            time={time}
+            setWaldoFound={setWaldoFound}
+            setWendaFound={setWendaFound}
+            setWizardFound={setWizardFound}
+            setOdlawFound={setOdlawFound}
           />
           <img
             ref={ref}
@@ -165,10 +209,7 @@ function Image() {
               }
             }
             onMouseMove={e => mousePos(e)}
-            onClick={() => {
-              console.log(helper.checkWin(posX, posY, imgWidth, imgHeight, coords));
-              setSelectionDisplay(true)
-            }}
+            onClick={() => setSelectionDisplay(true)}
           />
           <img
             ref={ref}

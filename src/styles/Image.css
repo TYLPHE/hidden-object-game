@@ -24,6 +24,8 @@
   width: 100vw;
   top: 0;
   left: 0;
+  filter: brightness(80%);
+  transition: 500ms;
 }
 .magnifier {
   width: 100px;

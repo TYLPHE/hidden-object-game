@@ -1,0 +1,16 @@
+.summary {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.64);
+  border-radius: 10px;
+  border: 1px solid;
+  top: 50vh;
+  left: 50vw;
+  width: 70vw;
+  height: 70vh;
+
+  display: flex;
+
+  font-size: 3vw;
+  z-index: 1;
+}

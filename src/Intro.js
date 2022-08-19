@@ -47,8 +47,14 @@ function Intro(props) {
             className={'crew'}
             onLoad={() => setCrewLoaded(true)}
           />
-          <div>Use your mouse to click on the crew.</div>
-          <button className='start' onClick={() => props.setSeenIntro(true)}>
+          <div>Use your mouse to find everybody.</div>
+          <button 
+            className='start' 
+            onClick={() => {
+              props.setSeenIntro(true);
+              props.setTimeToggle(true);
+            }}
+          >
             Start
           </button>
         </div>
