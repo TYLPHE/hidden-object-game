@@ -66,12 +66,12 @@ function Circled(props) {
     }
   }
   return (
-    <div>
+    <>
       <WaldoCircle />
       <WendaCircle />
       <WizardCircle />
       <OdlawCircle />
-    </div>
+    </>
   );
 }
 

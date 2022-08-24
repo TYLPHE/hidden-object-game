@@ -25,38 +25,36 @@ function Image() {
   const [posYOffset, setPosYOffset] = useState(0);
   const [imgWidth, setImgWidth] = useState(null);
   const [imgHeight, setImgHeight] = useState(null);
-  
+  // states related to Intro component
   const [seenIntro, setSeenIntro] = useState(false);
   const [displayIntro, setDisplayIntro] = useState(false);
-  
+  // states related to the magnifying glass
   const [magnifierDisp, setMagnifierDisp] = useState(false);
   const [selectionDisplay, setSelectionDisplay] = useState(false);
-
+  // states related to the timer for Selection component
   const [timeToggle, setTimeToggle] = useState(false);
   const [time, setTime] = useState(0);
-
+  //states to set if hidden object is found
   const [waldoFound, setWaldoFound] = useState(false);
   const [wendaFound, setWendaFound] = useState(false);
   const [wizardFound, setWizardFound] = useState(false);
   const [odlawFound, setOdlawFound] = useState(false);
-
-  const [waldoCircleCoordX, setWaldoCircleCoordX] = useState(0);
-  const [waldoCircleCoordY, setWaldoCircleCoordY] = useState(0);
-
-  const [wendaCircleCoordX, setWendaCircleCoordX] = useState(0);
-  const [wendaCircleCoordY, setWendaCircleCoordY] = useState(0);
-
-  const [wizardCircleCoordX, setWizardCircleCoordX] = useState(0);
-  const [wizardCircleCoordY, setWizardCircleCoordY] = useState(0);
-
-  const [odlawCircleCoordX, setOdlawCircleCoordX] = useState(0);
-  const [odlawCircleCoordY, setOdlawCircleCoordY] = useState(0);
-
-
+  // states to display a circle if object found
   const [waldoCircleDisp, setWaldoCircleDisp] = useState(false);
   const [wendaCircleDisp, setWendaCircleDisp] = useState(false);
   const [wizardCircleDisp, setWizardCircleDisp] = useState(false);
   const [odlawCircleDisp, setOdlawCircleDisp] = useState(false);
+  // states to set the object found circle coordinates
+  const [waldoCircleCoordX, setWaldoCircleCoordX] = useState(0);
+  const [waldoCircleCoordY, setWaldoCircleCoordY] = useState(0);
+  const [wendaCircleCoordX, setWendaCircleCoordX] = useState(0);
+  const [wendaCircleCoordY, setWendaCircleCoordY] = useState(0);
+  const [wizardCircleCoordX, setWizardCircleCoordX] = useState(0);
+  const [wizardCircleCoordY, setWizardCircleCoordY] = useState(0);
+  const [odlawCircleCoordX, setOdlawCircleCoordX] = useState(0);
+  const [odlawCircleCoordY, setOdlawCircleCoordY] = useState(0);
+
+  // grabs the main waldo map url from firebase
   useEffect(() => {
     async function fetchData() {
       setUrl(await helper.getUrl('images/waldo1.jpg'));
@@ -71,12 +69,15 @@ function Image() {
   }, [url]);
 
   useEffect(() => {
+    let interval;
     if (timeToggle) {
-      const interval = setInterval(() => {
+      interval = setInterval(() => {
         setTime(prevTime => prevTime + 1);
       }, 1000)
-      
       return () => clearInterval(interval); 
+    }
+    if (!timeToggle) {
+      return () => clearInterval(interval)
     }
   }, [time, timeToggle]);
 
@@ -126,7 +127,6 @@ function Image() {
   // find the px value of width and height of image on load
   function findDimensions({ target: img }) {
     const { offsetHeight, offsetWidth } = img;
-    console.log('finddimensions: ', offsetWidth, offsetHeight)
     setImgHeight(offsetHeight);
     setImgWidth(offsetWidth);
   }
@@ -168,7 +168,13 @@ function Image() {
     if (waldoFound && wendaFound && wizardFound && odlawFound) {
       return (
         <div>
-          <Summary />
+          <Summary 
+            url={url}
+            time={time}
+            setTimeToggle={setTimeToggle}
+            bgX={`calc( ${( posX / imgWidth ) * 100}% + ${ posXOffset }px )`}
+            bgY={`calc( ${( posY / imgHeight ) * 100 }% + ${ posYOffset }px )`}
+          />
           <img
           ref={ref}
           alt='Waldo map' 
@@ -231,22 +237,19 @@ function Image() {
       return (
         <div>
           <Circled 
-            waldoCircleCoordX={waldoCircleCoordX}
-            waldoCircleCoordY={waldoCircleCoordY}
-
-            wendaCircleCoordX={wendaCircleCoordX}
-            wendaCircleCoordY={wendaCircleCoordY}
-
-            wizardCircleCoordX={wizardCircleCoordX}
-            wizardCircleCoordY={wizardCircleCoordY}
-
-            odlawCircleCoordX={odlawCircleCoordX}
-            odlawCircleCoordY={odlawCircleCoordY}
-
             waldoCircleDisp={waldoCircleDisp}
             wendaCircleDisp={wendaCircleDisp}
             wizardCircleDisp={wizardCircleDisp}
             odlawCircleDisp={odlawCircleDisp}
+
+            waldoCircleCoordX={waldoCircleCoordX}
+            waldoCircleCoordY={waldoCircleCoordY}
+            wendaCircleCoordX={wendaCircleCoordX}
+            wendaCircleCoordY={wendaCircleCoordY}
+            wizardCircleCoordX={wizardCircleCoordX}
+            wizardCircleCoordY={wizardCircleCoordY}
+            odlawCircleCoordX={odlawCircleCoordX}
+            odlawCircleCoordY={odlawCircleCoordY}
           />
           <div
             alt='cursor with zoom'

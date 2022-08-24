@@ -14,3 +14,7 @@
   font-size: 3vw;
   z-index: 1;
 }
+.waldo-window {
+  width: 100px;
+  height: 100px;
+}

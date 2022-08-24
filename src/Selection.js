@@ -31,7 +31,6 @@ function Selection(props) {
     );
 
     if (toMatch === name) {
-      console.log('someone found');
       if (name === 'waldo') {
         props.setWaldoCircleDisp(true);
         props.setWaldoCircleCoordX(props.left);
