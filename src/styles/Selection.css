@@ -63,3 +63,15 @@
   top: 108px;
   right: -59px;
 }
+.found {
+  background-color: green;
+  animation: blink-in 250ms;
+}
+.wrong {
+  background-color: rgb(194, 0, 0);
+  animation-name: blink-in 250ms;
+}
+
+@keyframes blink-in {
+  0% { background-color: rgba(255, 255, 255, 0.911); }
+}

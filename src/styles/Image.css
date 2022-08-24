@@ -12,7 +12,7 @@
   width: 100vw;
   cursor: none;
   user-select: none;
-  transition: 500ms;
+  transition: 250ms;
 }
 .image-intro {
   width: 100vw;
@@ -25,7 +25,7 @@
   top: 0;
   left: 0;
   filter: brightness(80%);
-  transition: 500ms;
+  transition: 250ms;
 }
 .magnifier {
   width: 100px;

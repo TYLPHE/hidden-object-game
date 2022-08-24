@@ -8,6 +8,7 @@ function Selection(props) {
   const [wendaUrl, setWendaUrl] = useState(null);
   const [wizardUrl, setWizardUrl] = useState(null);
   const [odlawUrl, setOdlawUrl] = useState(null);
+  const [incorrect, setIncorrect] = useState(null);
 
   useEffect(() => {
     async function fetchData(setState, location) {
@@ -32,19 +33,42 @@ function Selection(props) {
     if (toMatch === name) {
       console.log('someone found');
       if (name === 'waldo') {
-        return props.setWaldoFound(true);
+        props.setWaldoCircleDisp(true);
+        props.setWaldoCircleCoordX(props.left);
+        props.setWaldoCircleCoordY(props.top);
+        props.setWaldoFound(true);
+        props.setSelectionDisplay(false);
+        return;
       }
       if (name === 'wenda') {
-        return props.setWendaFound(true);
+        props.setWendaCircleDisp(true);
+        props.setWendaCircleCoordX(props.left);
+        props.setWendaCircleCoordY(props.top);
+        props.setWendaFound(true);
+        props.setSelectionDisplay(false);
+        return;
       }
       if (name === 'wizard') {
-        return props.setWizardFound(true);
+        props.setWizardCircleDisp(true);
+        props.setWizardCircleCoordX(props.left);
+        props.setWizardCircleCoordY(props.top);
+        props.setWizardFound(true);
+        props.setSelectionDisplay(false);
+        return;
       }
       if (name === 'odlaw') {
-        return props.setOdlawFound(true);
+        props.setOdlawCircleDisp(true);
+        props.setOdlawCircleCoordX(props.left);
+        props.setOdlawCircleCoordY(props.top);
+        props.setOdlawFound(true);
+        props.setSelectionDisplay(false);
+        return;
       }
     } else {
-      return console.log('nobody found');
+      setIncorrect(name);
+      setTimeout(() => {
+        setIncorrect(null);
+      }, 500);
     }
   }
 
@@ -67,25 +91,49 @@ function Selection(props) {
         onClick={() => props.setSelectionDisplay(false)}
       />
       <img 
-        className='bubble selection-waldo center' 
+        className={
+          (incorrect === 'waldo') ?
+            'bubble selection-waldo center wrong' :
+            props.waldoFound ?
+              'bubble selection-waldo center found' :
+              'bubble selection-waldo center'
+        }
         alt='Waldo'
         src={waldoUrl}
         onClick={() => matchingImage('waldo')}
       />
       <img 
-        className='bubble selection-wenda center' 
+        className={
+          (incorrect === 'wenda') ?
+            'bubble selection-wenda center wrong' :
+            props.wendaFound ?
+              'bubble selection-wenda center found' :
+              'bubble selection-wenda center'
+        } 
         alt='Wenda'
         src={wendaUrl}
         onClick={() => matchingImage('wenda')}
       />
       <img 
-        className='bubble selection-wizard center'
+        className={
+          (incorrect === 'wizard') ?
+          'bubble selection-wizard center wrong' :
+            props.wizardFound ?
+              'bubble selection-wizard center found' :
+              'bubble selection-wizard center'
+        }
         alt='Wizard'
         src={wizardUrl}
         onClick={() => matchingImage('wizard')}
       />
       <img 
-        className='bubble selection-odlaw center'
+        className={
+          (incorrect === 'odlaw') ?
+          'bubble selection-odlaw center wrong' :
+            props.odlawFound ?
+              'bubble selection-odlaw center found' :
+              'bubble selection-odlaw center'
+        }
         alt='Odlaw'
         src={odlawUrl}
         onClick={() => matchingImage('odlaw')}

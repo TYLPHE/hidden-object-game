@@ -3,6 +3,7 @@ import helper from './helper';
 import Intro from './Intro';
 import Selection from './Selection';
 import Summary from './Summary';
+import Circled from './Circled';
 import './styles/Image.css';
 
 // pull data from Firebase and populate coords object
@@ -39,6 +40,23 @@ function Image() {
   const [wizardFound, setWizardFound] = useState(false);
   const [odlawFound, setOdlawFound] = useState(false);
 
+  const [waldoCircleCoordX, setWaldoCircleCoordX] = useState(0);
+  const [waldoCircleCoordY, setWaldoCircleCoordY] = useState(0);
+
+  const [wendaCircleCoordX, setWendaCircleCoordX] = useState(0);
+  const [wendaCircleCoordY, setWendaCircleCoordY] = useState(0);
+
+  const [wizardCircleCoordX, setWizardCircleCoordX] = useState(0);
+  const [wizardCircleCoordY, setWizardCircleCoordY] = useState(0);
+
+  const [odlawCircleCoordX, setOdlawCircleCoordX] = useState(0);
+  const [odlawCircleCoordY, setOdlawCircleCoordY] = useState(0);
+
+
+  const [waldoCircleDisp, setWaldoCircleDisp] = useState(false);
+  const [wendaCircleDisp, setWendaCircleDisp] = useState(false);
+  const [wizardCircleDisp, setWizardCircleDisp] = useState(false);
+  const [odlawCircleDisp, setOdlawCircleDisp] = useState(false);
   useEffect(() => {
     async function fetchData() {
       setUrl(await helper.getUrl('images/waldo1.jpg'));
@@ -64,7 +82,6 @@ function Image() {
 
   useLayoutEffect(() => {
     function handleResize() {
-      console.log('resized', ref.current.offsetWidth, ref.current.offsetHeight);
       setImgHeight(ref.current.offsetHeight);
       setImgWidth(ref.current.offsetWidth);
     }
@@ -181,12 +198,29 @@ function Image() {
             setWendaFound={setWendaFound}
             setWizardFound={setWizardFound}
             setOdlawFound={setOdlawFound}
+            waldoFound={waldoFound}
+            wendaFound={wendaFound}
+            wizardFound={wizardFound}
+            odlawFound={odlawFound}
+            setWaldoCircleDisp={setWaldoCircleDisp}
+            setWendaCircleDisp={setWendaCircleDisp}
+            setWizardCircleDisp={setWizardCircleDisp}
+            setOdlawCircleDisp={setOdlawCircleDisp}
+            setWaldoCircleCoordX={setWaldoCircleCoordX}
+            setWaldoCircleCoordY={setWaldoCircleCoordY}
+            setWendaCircleCoordX={setWendaCircleCoordX}
+            setWendaCircleCoordY={setWendaCircleCoordY}
+            setWizardCircleCoordX={setWizardCircleCoordX}
+            setWizardCircleCoordY={setWizardCircleCoordY}
+            setOdlawCircleCoordX={setOdlawCircleCoordX}
+            setOdlawCircleCoordY={setOdlawCircleCoordY}
           />
           <img
             ref={ref}
             alt='Waldo map' 
             src={url}
             className='image-selection absolute'
+            onClick={() => setSelectionDisplay(false)}
           />
         </div>
       );
@@ -196,6 +230,24 @@ function Image() {
     if (magnifierDisp) {
       return (
         <div>
+          <Circled 
+            waldoCircleCoordX={waldoCircleCoordX}
+            waldoCircleCoordY={waldoCircleCoordY}
+
+            wendaCircleCoordX={wendaCircleCoordX}
+            wendaCircleCoordY={wendaCircleCoordY}
+
+            wizardCircleCoordX={wizardCircleCoordX}
+            wizardCircleCoordY={wizardCircleCoordY}
+
+            odlawCircleCoordX={odlawCircleCoordX}
+            odlawCircleCoordY={odlawCircleCoordY}
+
+            waldoCircleDisp={waldoCircleDisp}
+            wendaCircleDisp={wendaCircleDisp}
+            wizardCircleDisp={wizardCircleDisp}
+            odlawCircleDisp={odlawCircleDisp}
+          />
           <div
             alt='cursor with zoom'
             className='magnifier absolute center zoomed no-cursor'
