@@ -1,25 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import helper from './helper';
 import Clock from './Clock';
 import './styles/Selection.css'
 
 function Selection(props) {
-  const [waldoUrl, setWaldoUrl] = useState(null);
-  const [wendaUrl, setWendaUrl] = useState(null);
-  const [wizardUrl, setWizardUrl] = useState(null);
-  const [odlawUrl, setOdlawUrl] = useState(null);
   const [incorrect, setIncorrect] = useState(null);
-
-  useEffect(() => {
-    async function fetchData(setState, location) {
-      setState(await helper.getUrl(location))
-    }
-
-    fetchData(setWaldoUrl, 'images/waldo-single.png');
-    fetchData(setWendaUrl, 'images/wenda-single.png');
-    fetchData(setWizardUrl, 'images/wizard-single.png');
-    fetchData(setOdlawUrl, 'images/odlaw-single.png');
-  }, [])
 
   function matchingImage(name) {
     const toMatch = helper.checkFound(
@@ -37,6 +22,8 @@ function Selection(props) {
         props.setWaldoCircleCoordY(props.top);
         props.setWaldoFound(true);
         props.setSelectionDisplay(false);
+        props.setSummaryWaldoX(props.bgPosX);
+        props.setSummaryWaldoY(props.bgPosY);
         return;
       }
       if (name === 'wenda') {
@@ -45,6 +32,8 @@ function Selection(props) {
         props.setWendaCircleCoordY(props.top);
         props.setWendaFound(true);
         props.setSelectionDisplay(false);
+        props.setSummaryWendaX(props.bgPosX);
+        props.setSummaryWendaY(props.bgPosY);
         return;
       }
       if (name === 'wizard') {
@@ -53,6 +42,8 @@ function Selection(props) {
         props.setWizardCircleCoordY(props.top);
         props.setWizardFound(true);
         props.setSelectionDisplay(false);
+        props.setSummaryWizardX(props.bgPosX);
+        props.setSummaryWizardY(props.bgPosY);
         return;
       }
       if (name === 'odlaw') {
@@ -61,6 +52,8 @@ function Selection(props) {
         props.setOdlawCircleCoordY(props.top);
         props.setOdlawFound(true);
         props.setSelectionDisplay(false);
+        props.setSummaryOdlawX(props.bgPosX);
+        props.setSummaryOdlawY(props.bgPosY);
         return;
       }
     } else {
@@ -98,7 +91,7 @@ function Selection(props) {
               'bubble selection-waldo center'
         }
         alt='Waldo'
-        src={waldoUrl}
+        src={props.waldoUrl}
         onClick={() => matchingImage('waldo')}
       />
       <img 
@@ -110,7 +103,7 @@ function Selection(props) {
               'bubble selection-wenda center'
         } 
         alt='Wenda'
-        src={wendaUrl}
+        src={props.wendaUrl}
         onClick={() => matchingImage('wenda')}
       />
       <img 
@@ -122,7 +115,7 @@ function Selection(props) {
               'bubble selection-wizard center'
         }
         alt='Wizard'
-        src={wizardUrl}
+        src={props.wizardUrl}
         onClick={() => matchingImage('wizard')}
       />
       <img 
@@ -134,7 +127,7 @@ function Selection(props) {
               'bubble selection-odlaw center'
         }
         alt='Odlaw'
-        src={odlawUrl}
+        src={props.odlawUrl}
         onClick={() => matchingImage('odlaw')}
       />
     </div>

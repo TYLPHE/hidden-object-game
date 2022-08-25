@@ -8,23 +8,82 @@ function Summary(props) {
   })
 
   return (
-    <div className='intro-container'>
-      <div>
-        Complete!
+    <div className='summary-container'>
+      <div className='summary-title'>
+        You Win!
       </div>
-      <div>
-        {helper.convertSeconds(props.time)}
-      </div>
-      <div
-        className='waldo-window'
-        style={
-          {
-            backgroundImage: `url( ${props.url} )`,
-            backgroundPositionX: props.bgX,
-            backgroundPositionY: props.bgY
-          }
-        }
-      />
+        <div>
+          Time:
+          &nbsp;
+          {helper.convertSeconds(props.time)}
+        </div>
+        <div className='summary-window-container'>
+          <img
+            className='summary-profile'
+            alt='Waldo'
+            src={props.waldoUrl}
+          />
+          <div
+            className='summary-magnify'
+            style={
+              {
+                backgroundImage: `url( ${props.url} )`,
+                backgroundPositionX: props.summaryWaldoX,
+                backgroundPositionY: props.summaryWaldoY
+              }
+            }
+          />
+
+          <img
+            className='summary-profile' 
+            alt='Waldo'
+            src={props.wendaUrl}
+          />
+          <div
+            className='summary-magnify'
+            style={
+              {
+                backgroundImage: `url( ${props.url} )`,
+                backgroundPositionX: props.summaryWendaX,
+                backgroundPositionY: props.summaryWendaY
+              }
+            }
+          />
+
+          <img
+            className='summary-profile' 
+            alt='Waldo'
+            src={props.wizardUrl}
+          />
+          <div
+            className='summary-magnify'
+            style={
+              {
+                backgroundImage: `url( ${props.url} )`,
+                backgroundPositionX: props.summaryWizardX,
+                backgroundPositionY: props.summaryWizardY
+              }
+            }
+          />
+
+          <img
+            className='summary-profile' 
+            alt='Waldo'
+            src={props.odlawUrl}
+          />
+          <div
+            className='summary-magnify'
+            style={
+              {
+                backgroundImage: `url( ${props.url} )`,
+                backgroundPositionX: props.summaryOdlawX,
+                backgroundPositionY: props.summaryOdlawY
+              }
+            }
+          />
+        </div>
+
+
     </div>
   );
 }

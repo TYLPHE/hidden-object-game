@@ -17,7 +17,6 @@ helper.getSolutions(coords);
 
 function Image() {
   const ref = useRef(null);
-  const [url, setUrl] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [posX, setPosX] = useState(null);
   const [posY, setPosY] = useState(null);
@@ -25,6 +24,12 @@ function Image() {
   const [posYOffset, setPosYOffset] = useState(0);
   const [imgWidth, setImgWidth] = useState(null);
   const [imgHeight, setImgHeight] = useState(null);
+  // image url
+  const [url, setUrl] = useState(null);
+  const [waldoUrl, setWaldoUrl] = useState(null);
+  const [wendaUrl, setWendaUrl] = useState(null);
+  const [wizardUrl, setWizardUrl] = useState(null);
+  const [odlawUrl, setOdlawUrl] = useState(null);
   // states related to Intro component
   const [seenIntro, setSeenIntro] = useState(false);
   const [displayIntro, setDisplayIntro] = useState(false);
@@ -39,6 +44,15 @@ function Image() {
   const [wendaFound, setWendaFound] = useState(false);
   const [wizardFound, setWizardFound] = useState(false);
   const [odlawFound, setOdlawFound] = useState(false);
+  // positions for summary window
+  const [summaryWaldoX, setSummaryWaldoX] = useState(null);
+  const [summaryWaldoY, setSummaryWaldoY] = useState(null);
+  const [summaryWendaX, setSummaryWendaX] = useState(null);
+  const [summaryWendaY, setSummaryWendaY] = useState(null);
+  const [summaryWizardX, setSummaryWizardX] = useState(null);
+  const [summaryWizardY, setSummaryWizardY] = useState(null);
+  const [summaryOdlawX, setSummaryOdlawX] = useState(null);
+  const [summaryOdlawY, setSummaryOdlawY] = useState(null);
   // states to display a circle if object found
   const [waldoCircleDisp, setWaldoCircleDisp] = useState(false);
   const [wendaCircleDisp, setWendaCircleDisp] = useState(false);
@@ -61,6 +75,17 @@ function Image() {
     }
     fetchData();
   }, []);
+
+  useEffect(() => {
+    async function fetchData(setState, location) {
+      setState(await helper.getUrl(location))
+    }
+
+    fetchData(setWaldoUrl, 'images/waldo-single.png');
+    fetchData(setWendaUrl, 'images/wenda-single.png');
+    fetchData(setWizardUrl, 'images/wizard-single.png');
+    fetchData(setOdlawUrl, 'images/odlaw-single.png');
+  }, [])
 
   useEffect(() => {
     if (url) {
@@ -174,6 +199,18 @@ function Image() {
             setTimeToggle={setTimeToggle}
             bgX={`calc( ${( posX / imgWidth ) * 100}% + ${ posXOffset }px )`}
             bgY={`calc( ${( posY / imgHeight ) * 100 }% + ${ posYOffset }px )`}
+            summaryWaldoX={summaryWaldoX}
+            summaryWaldoY={summaryWaldoY}
+            summaryWendaX={summaryWendaX}
+            summaryWendaY={summaryWendaY}
+            summaryWizardX={summaryWizardX}
+            summaryWizardY={summaryWizardY}
+            summaryOdlawX={summaryOdlawX}
+            summaryOdlawY={summaryOdlawY}
+            waldoUrl={waldoUrl}
+            wendaUrl={wendaUrl}
+            wizardUrl={wizardUrl}
+            odlawUrl={odlawUrl}
           />
           <img
           ref={ref}
@@ -220,6 +257,18 @@ function Image() {
             setWizardCircleCoordY={setWizardCircleCoordY}
             setOdlawCircleCoordX={setOdlawCircleCoordX}
             setOdlawCircleCoordY={setOdlawCircleCoordY}
+            setSummaryWaldoX={setSummaryWaldoX}
+            setSummaryWaldoY={setSummaryWaldoY}
+            setSummaryWendaX={setSummaryWendaX}
+            setSummaryWendaY={setSummaryWendaY}
+            setSummaryWizardX={setSummaryWizardX}
+            setSummaryWizardY={setSummaryWizardY}
+            setSummaryOdlawX={setSummaryOdlawX}
+            setSummaryOdlawY={setSummaryOdlawY}
+            waldoUrl={waldoUrl}
+            wendaUrl={wendaUrl}
+            wizardUrl={wizardUrl}
+            odlawUrl={odlawUrl}
           />
           <img
             ref={ref}
