@@ -12,12 +12,15 @@
   padding: 2rem;
   display: flex;
   flex-direction: column;
+  align-items: center;
   font-size: 3vw;
   z-index: 1;
+  overflow: scroll;
 }
 .summary-magnify {
   width: 100px;
   height: 100px;
+  transform-origin: center;
   background-repeat: no-repeat;
   background-size: 2200px;
   background-color: black;
@@ -25,14 +28,34 @@
   border: 1px solid black;
 }
 .summary-title {
-  align-self: center;
   font-weight: bold;
 }
 .summary-window-container {
   display: flex;
+  justify-content: space-evenly;
+  width: 65%;
 }
 .summary-profile {
   object-fit: scale-down;
   width: 100px;
   height: 100px;
+}
+.summary-profile-container {
+  display: flex;
+  padding: 2rem;
+}
+.summary-time {
+  padding-top: 1rem;
+}
+.submit-form {
+  display: flex;
+  gap: 5px;
+}
+input {
+  font-size: 1.5rem;
+}
+.reset-button {
+  font-size: 1.5rem;
+  margin: 1rem;
+  padding: 0 10%;
 }

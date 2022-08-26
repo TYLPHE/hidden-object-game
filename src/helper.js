@@ -61,6 +61,11 @@ const helper = {
     const url = await getDownloadURL(ref(storage, location));
     return url;
   },
+
+  // submit user time to firebase
+  submit: () => {
+    console.log('submitted')
+  }
 }
 
 export default helper;
