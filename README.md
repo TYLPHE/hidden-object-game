@@ -58,3 +58,23 @@ TODO: expand on this
 ### Setting a load
 Instead of saving my images in the src folder, I've loaded my images to firebase, creating a URL, and then displaying it on my app. The problem is that my components will render before the image loads. I wanted the image to completely load first and then render the component for a smoother user experience. I found a solution [thanks to this article](https://stackoverflow.com/questions/43115246/how-to-detect-when-a-image-is-loaded-that-is-provided-via-props-and-change-sta).
 
+### Leaderboard
+https://firebase.google.com/docs/firestore/quickstart?hl=en&authuser=0
+
+understanding more about rules to write to my scores collection while only reading the solutions
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+  	match /{document=**} {
+    	allow read;
+    }
+	
+    match /scores/{score} {
+      allow write;
+    }
+  }
+}
+```
+
+next TODO is to sort by value: https://firebase.google.com/docs/database/web/lists-of-data

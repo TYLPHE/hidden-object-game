@@ -4,6 +4,7 @@ import Intro from './Intro';
 import Selection from './Selection';
 import Summary from './Summary';
 import Circled from './Circled';
+import Rank from './Rank'
 import './styles/Image.css';
 
 // pull data from Firebase and populate coords object
@@ -33,6 +34,8 @@ function Image() {
   // states related to Intro component
   const [seenIntro, setSeenIntro] = useState(false);
   const [displayIntro, setDisplayIntro] = useState(false);
+  // states that show scores list after submitting own score
+  const [displayRank, setDisplayRank] = useState(false);
   // states related to the magnifying glass
   const [magnifierDisp, setMagnifierDisp] = useState(false);
   const [selectionDisplay, setSelectionDisplay] = useState(false);
@@ -188,7 +191,19 @@ function Image() {
       </div>
       )
     }
-
+    if (displayRank) {
+      return (
+        <div>
+          <Rank />
+          <img
+            ref={ref}
+            alt='Waldo map' 
+            src={url}
+            className='image-selection absolute'
+          />
+        </div>
+      )
+    }
     // user found all objects. display Summary component
     if (waldoFound && wendaFound && wizardFound && odlawFound) {
       return (
@@ -211,6 +226,7 @@ function Image() {
             wendaUrl={wendaUrl}
             wizardUrl={wizardUrl}
             odlawUrl={odlawUrl}
+            setDisplayRank={setDisplayRank}
           />
           <img
           ref={ref}

@@ -1,11 +1,17 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './styles/Summary.css';
 import helper from './helper';
 
 function Summary(props) {
+  const [name, setName] = useState('anonymous');
+
   useEffect(() => {
     props.setTimeToggle(false)
   })
+
+  function handleName(e) {
+    setName(e.target.value);
+  }
 
   return (
     <div className='summary-container'>
@@ -109,13 +115,17 @@ function Summary(props) {
           type='text' 
           name='name' 
           placeholder='Enter Name' 
+          onChange={handleName}
           autoFocus={true}
         />
         <input 
           className='submit-button' 
           type='button' 
           value='Submit Score'
-          onClick={() => helper.submit()}
+          onClick={() => {
+            helper.saveScore(name, props.time)
+            props.setDisplayRank(true)
+          }}
         />
       </div>
       <input 

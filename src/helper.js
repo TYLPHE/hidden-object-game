@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getDoc, getFirestore, doc } from "firebase/firestore";
+import { getDoc, getFirestore, doc, addDoc, getDocs, collection, } from "firebase/firestore";
 import { getDownloadURL, ref, getStorage } from "firebase/storage";
 
 const helper = {
@@ -52,6 +52,29 @@ const helper = {
       const docRef = doc(db, 'solutions', key);
       const docSnap = await getDoc(docRef);
       coords[key] = docSnap.data();
+    }
+  },
+
+  getScores: async () => {
+    const db = getFirestore(helper.app());
+    const querySnapshot = await getDocs(collection(db, 'scores'));
+    querySnapshot.forEach((doc) => {
+      console.log(`${doc.id} => ${doc.data()}`);
+      console.log(doc.data())
+    });
+  },
+
+  saveScore: async (name = 'anonymous', score) => {
+    const db = getFirestore(helper.app());
+    try {
+      const docRef = await addDoc(collection(db, 'scores'), 
+        {
+          score: score,
+          name: name,
+        });
+      console.log('doc written with id: ', docRef.id);
+    } catch (e) {
+      console.error('error adding document: ', e);
     }
   },
 
