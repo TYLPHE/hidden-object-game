@@ -53,9 +53,33 @@ function Intro(props) {
             onClick={() => {
               props.setSeenIntro(true);
               props.setTimeToggle(true);
+              props.setMap('waldo1');
+              props.updateCoords('waldo1');
             }}
           >
-            Start
+            Ski Resort Map
+          </button>
+          <button 
+            className='start' 
+            onClick={() => {
+              props.setSeenIntro(true);
+              props.setTimeToggle(true);
+              props.setMap('waldo2')
+              props.updateCoords('waldo2');
+            }}
+          >
+            Track and Field Map
+          </button>
+          <button 
+            className='start' 
+            onClick={() => {
+              props.setSeenIntro(true);
+              props.setTimeToggle(true);
+              props.setMap('waldo3');
+              props.updateCoords('waldo3');
+            }}
+          >
+            Space Map
           </button>
         </div>
       </div>

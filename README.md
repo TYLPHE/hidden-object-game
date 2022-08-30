@@ -78,3 +78,7 @@ service cloud.firestore {
 ```
 
 next TODO is to sort by value: https://firebase.google.com/docs/database/web/lists-of-data
+
+### Setting a promise
+Must return a promise from function and in the setState, use a .then function to wait for promise to fulfill.
+https://stackoverflow.com/questions/37533929/how-to-return-data-from-promise

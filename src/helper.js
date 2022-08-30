@@ -39,7 +39,6 @@ const helper = {
         result = key
       }
     }
-
     return result;
   },
 
@@ -54,20 +53,40 @@ const helper = {
 
   // get positions of all characters
   // input object with keys of character names in firebase database
-  getSolutions: async (coords) => {
+  getSolutions: async (coords, mapName) => {
+    console.log('helper.getSolutions')
     const db = getFirestore(helper.app());
     
     for (let key in coords) {
-      const docRef = doc(db, 'solutions', key);
+      const docRef = doc(db, `solutions-${mapName}`, key);
       const docSnap = await getDoc(docRef);
       coords[key] = docSnap.data();
     }
   },
+
+  getSolutionsTest: async (mapName) => {
+    console.log('helper.getSolutionsTest')
+    const db = getFirestore(helper.app());
+    const solutions = {
+      odlaw: {},
+      waldo: {},
+      wenda: {},
+      wizard: {},
+    }
+    for (let key in solutions) {
+      const docRef = doc(db, `solutions-${mapName}`, key);
+      const docSnap = await getDoc(docRef);
+      solutions[key] = docSnap.data();
+    }
+    return solutions;
+  },
+
   // returns a list of scores
-  getScores: async () => {
+  getScores: async (map) => {
+    console.log('helper.getScores')
     const arr = [];
     const db = getFirestore(helper.app());
-    const scoresRef = collection(db, 'scores');
+    const scoresRef = collection(db, `scores-${map}`);
     const q = query(scoresRef, orderBy('score'));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
@@ -80,10 +99,11 @@ const helper = {
     return arr;
   },
 
-  saveScore: async (name = 'anonymous', score) => {
+  saveScore: async (name = 'anonymous', score, map) => {
+    console.log('helper.saveScore')
     const db = getFirestore(helper.app());
     try {
-      const docRef = await addDoc(collection(db, 'scores'), 
+      const docRef = await addDoc(collection(db, `scores-${map}`), 
         {
           score: score,
           name: name,
@@ -96,6 +116,7 @@ const helper = {
 
   // return a url from Firebase Storage
   getUrl: async (location) => {
+    console.log('helper.getUrl')
     const storage = getStorage(helper.app());
     const url = await getDownloadURL(ref(storage, location));
     return url;

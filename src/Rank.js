@@ -7,8 +7,8 @@ function Rank(props) {
   const [playerRank, setPlayerRank] = useState(0);
 
   useEffect(() => {
-    helper.getScores().then((value) => setScores(value));
-  }, []);
+    helper.getScores(props.map).then((value) => setScores(value));
+  }, [props.map]);
 
   useEffect(() => {
     for (let i = 0; i < scores.length; i += 1) {
@@ -18,8 +18,6 @@ function Rank(props) {
     }
   }, [props.rankId, scores])
   
-
-
   function TimesList() {
     const arr = [];
     for (let i = 0; i < scores.length; i += 1) {
