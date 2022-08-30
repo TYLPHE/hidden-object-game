@@ -1,4 +1,5 @@
 .rank-container {
+  border: 1px solid orange;
   position: absolute;
   transform: translate(-50%, -50%);
   background-color: rgba(0, 0, 0, 0.64);
@@ -13,7 +14,45 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 3vw;
+  font-size: 2vw;
   z-index: 1;
   overflow: scroll;
+}
+table, tr {
+  border: 1px solid white;
+}
+table {
+  width: 100%;
+}
+.table-name {
+  width: 100%;
+  padding: 0 1rem;
+}
+.table-time {
+  padding: 0 1rem;
+}
+.table-rank {
+  text-align: center;
+  padding: 0 1rem;
+}
+.rank-reset-cont {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.myRank-cont {
+  display: flex;
+}
+.rank-heading {
+  padding: 0 1rem;
+}
+.my-rank {
+  color: rgb(239, 248, 153);
+}
+.title {
+  font-weight: bold;
+}
+button {
+  font-size: 1.5vw;
+  padding: 0 1rem;
 }

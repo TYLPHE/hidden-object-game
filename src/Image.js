@@ -42,6 +42,8 @@ function Image() {
   // states related to the timer for Selection component
   const [timeToggle, setTimeToggle] = useState(false);
   const [time, setTime] = useState(0);
+  // user ID to determine rank
+  const [rankId, setRankId] = useState(null);
   //states to set if hidden object is found
   const [waldoFound, setWaldoFound] = useState(false);
   const [wendaFound, setWendaFound] = useState(false);
@@ -194,7 +196,7 @@ function Image() {
     if (displayRank) {
       return (
         <div>
-          <Rank />
+          <Rank rankId={rankId}/>
           <img
             ref={ref}
             alt='Waldo map' 
@@ -227,6 +229,7 @@ function Image() {
             wizardUrl={wizardUrl}
             odlawUrl={odlawUrl}
             setDisplayRank={setDisplayRank}
+            setRankId={setRankId}
           />
           <img
           ref={ref}

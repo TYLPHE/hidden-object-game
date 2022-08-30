@@ -1,6 +1,15 @@
 import { initializeApp } from "firebase/app";
-import { getDoc, getFirestore, doc, addDoc, getDocs, collection, } from "firebase/firestore";
 import { getDownloadURL, ref, getStorage } from "firebase/storage";
+import { 
+  getDoc, 
+  getFirestore, 
+  doc, 
+  addDoc, 
+  getDocs, 
+  collection,
+  orderBy, 
+  query
+} from "firebase/firestore";
 
 const helper = {
   app: () => {
@@ -54,14 +63,21 @@ const helper = {
       coords[key] = docSnap.data();
     }
   },
-
+  // returns a list of scores
   getScores: async () => {
+    const arr = [];
     const db = getFirestore(helper.app());
-    const querySnapshot = await getDocs(collection(db, 'scores'));
+    const scoresRef = collection(db, 'scores');
+    const q = query(scoresRef, orderBy('score'));
+    const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      console.log(`${doc.id} => ${doc.data()}`);
-      console.log(doc.data())
+      const newArr = [];
+      const data = doc.data();
+      newArr.push(doc.id, data.name, data.score)
+      arr.push(newArr);
     });
+
+    return arr;
   },
 
   saveScore: async (name = 'anonymous', score) => {
@@ -72,7 +88,7 @@ const helper = {
           score: score,
           name: name,
         });
-      console.log('doc written with id: ', docRef.id);
+      return docRef.id;
     } catch (e) {
       console.error('error adding document: ', e);
     }
@@ -85,10 +101,6 @@ const helper = {
     return url;
   },
 
-  // submit user time to firebase
-  submit: () => {
-    console.log('submitted')
-  }
 }
 
 export default helper;

@@ -13,6 +13,10 @@ function Summary(props) {
     setName(e.target.value);
   }
 
+  function handleSubmit() {
+
+  }
+
   return (
     <div className='summary-container'>
       <div className='summary-title'>
@@ -122,9 +126,9 @@ function Summary(props) {
           className='submit-button' 
           type='button' 
           value='Submit Score'
-          onClick={() => {
-            helper.saveScore(name, props.time)
-            props.setDisplayRank(true)
+          onClick={async () => {
+            props.setDisplayRank(true);
+            props.setRankId(await helper.saveScore(name, props.time));
           }}
         />
       </div>
