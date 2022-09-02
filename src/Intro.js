@@ -1,7 +1,6 @@
 import './styles/Intro.css';
 import helper from './helper';
 import { useEffect, useState } from 'react';
-// import crew from './images/crew.png';
 
 function Intro(props) {
   const [crew, setCrew] = useState(null);

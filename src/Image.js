@@ -8,28 +8,6 @@ import Rank from './Rank'
 import './styles/Image.css';
 
 // pull data from Firebase and populate coords object
-// const coords = {
-//   odlaw: {},
-//   waldo: {},
-//   wenda: {},
-//   wizard: {},
-// }
-// helper.getSolutions(coords, 'map1');
-
-// let mapUrl = fetchMap('waldo1');
-// async function fetchMap(map) {
-//   await helper.getUrl(`images/${map}.jpg`);
-// }
-
-// let coordsList;
-// async function fetchCoords(map) {
-//   await helper.getSolutionsTest(map);
-// }
-
-// async function fetchProfile(location) {
-//   await helper.getUrl(location)
-// }
-
 let walUrl;
 let wenUrl;
 let wizUrl;
@@ -40,18 +18,13 @@ async function profiles() {
   wenUrl = await helper.getUrl('images/wenda-single.png');
   wizUrl = await helper.getUrl('images/wizard-single.png');
   odlUrl = await helper.getUrl('images/odlaw-single.png');
-  console.log(walUrl)
 }
-
 profiles();
 
 let coords;
 async function updateCoords(map) {
   coords = await helper.getSolutionsTest(map);
-  console.log('coords')
 }
-
-
 
 function Image() {
   const ref = useRef(null);
@@ -66,10 +39,6 @@ function Image() {
   // image url
   const [map, setMap] = useState('waldo1')
   const [url, setUrl] = useState(null);
-  // const [waldoUrl, setWaldoUrl] = useState(walUrl);
-  // const [wendaUrl, setWendaUrl] = useState(wenUrl);
-  // const [wizardUrl, setWizardUrl] = useState(wizUrl);
-  // const [odlawUrl, setOdlawUrl] = useState(odlUrl);
   // states related to Intro component
   const [seenIntro, setSeenIntro] = useState(false);
   const [displayIntro, setDisplayIntro] = useState(false);
@@ -116,43 +85,10 @@ function Image() {
   useEffect(() => {
     async function fetchData(map) {
       setUrl(await helper.getUrl(`images/${map}.jpg`));
-      // setCoordsTest(await helper.getSolutionsTest(map));
     }
     fetchData(map);
     console.log('updated')
   }, [map, coordsTest]);
-
-  // useEffect(() => {
-  //   async function fetchData(setState, location) {
-  //     setState(await helper.getUrl(location))
-  //   }
-
-  //   fetchData(setWaldoUrl, 'images/waldo-single.png');
-  //   fetchData(setWendaUrl, 'images/wenda-single.png');
-  //   fetchData(setWizardUrl, 'images/wizard-single.png');
-  //   fetchData(setOdlawUrl, 'images/odlaw-single.png');
-  // }, [url])
-
-  // useEffect(() => {
-  //   setUrl(mapUrl);
-  //   setCoordsTest(coordsList);
-  //   setWaldoUrl(walUrl);
-  //   setWendaUrl(wenUrl);
-  //   setWizardUrl(wizUrl);
-  //   setOdlawUrl(odlUrl);
-  //   fetchCoords(map);
-  // }, [map])
-
-  // useEffect(() => {
-  //   console.log(walUrl, wenUrl, wizUrl, odlUrl)
-  //   async function setProfileUrl() {
-  //     setWaldoUrl(walUrl);
-  //     setWendaUrl(wenUrl);
-  //     setWizardUrl(wizUrl);
-  //     setOdlawUrl(odlUrl);
-  //   }
-  //   await setProfileUrl()
-  // }, [])
 
   useEffect(() => {
     if (url) {

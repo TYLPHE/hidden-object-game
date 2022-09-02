@@ -3,21 +3,6 @@ import helper from './helper';
 import Clock from './Clock';
 import './styles/Selection.css'
 
-// let walUrl;
-// let wenUrl;
-// let wizUrl;
-// let odlUrl;
-
-// async function profiles() {
-//   walUrl = await helper.getUrl('images/waldo-single.png')
-//   wenUrl = await helper.getUrl('images/wenda-single.png');
-//   wizUrl = await helper.getUrl('images/wizard-single.png');
-//   odlUrl = await helper.getUrl('images/odlaw-single.png');
-//   console.log(walUrl)
-// }
-
-// profiles();
-
 function Selection(props) {
   const [incorrect, setIncorrect] = useState(null);
 
@@ -107,7 +92,6 @@ function Selection(props) {
         }
         alt='Waldo'
         src={props.waldoUrl}
-        // src={walUrl}
         onClick={() => matchingImage('waldo')}
       />
       <img 
@@ -120,7 +104,6 @@ function Selection(props) {
         } 
         alt='Wenda'
         src={props.wendaUrl}
-        // src={wenUrl}
         onClick={() => matchingImage('wenda')}
       />
       <img 
@@ -133,7 +116,6 @@ function Selection(props) {
         }
         alt='Wizard'
         src={props.wizardUrl}
-        // src={wizUrl}
         onClick={() => matchingImage('wizard')}
       />
       <img 
@@ -146,7 +128,6 @@ function Selection(props) {
         }
         alt='Odlaw'
         src={props.odlawUrl}
-        // src={odlUrl}
         onClick={() => matchingImage('odlaw')}
       />
     </div>
