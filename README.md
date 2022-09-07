@@ -143,7 +143,7 @@ service cloud.firestore {
 }
 ```
 
-My app at this point has 3 different maps, labeled waldo1, waldo2, and waldo3. Here, I created rules for each of my database folders:
+My app has 3 different maps, labeled waldo1, waldo2, and waldo3. Here, I created rules for each of my database folders:
 ![Image of my Firebase database structure](https://github.com/TYLPHE/hidden-object-game/blob/main/readme-assets/firestore-database.jpg)
 
 My scores collections rules are set to allow users to post their scores, while my solutions database is read-only. Since I updated these rules, I stopped receiving emails from firebase about my rules.
