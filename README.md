@@ -109,6 +109,45 @@ service cloud.firestore {
 }
 ```
 
+After further developing my app, I realized that my rules were not specific enough. I received emails from Firebase to update my rules because any user could read my database and cap my monthly limit of reads.
+
+After [learning more about how to write rules](https://firebase.google.com/docs/firestore/quickstart?hl=en&authuser=0), my rules now look like the following:
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+  	match /solutions-waldo1/{solutions} {
+			allow read;
+    }
+    match /solutions-waldo2/{solutions} {
+    	allow read;
+    }
+    match /solutions-waldo2/{solutions} {
+			allow read;
+    }
+
+  
+    match /scores-waldo1/{scores} {
+    	allow read;
+      allow create;
+    }
+    match /scores-waldo2/{scores} {
+  		allow read;
+      allow create;
+    }
+    match /scores-waldo3/{scores} {
+    	allow read;
+      allow create;
+    }
+  }
+}
+```
+
+My app at this point has 3 different maps, labeled waldo1, waldo2, and waldo3. Here, I created rules for each of my database folders:
+![Image of my Firebase database structure](https://github.com/TYLPHE/hidden-object-game/blob/main/readme-assets/firestore-database.jpg)
+
+My scores collections rules are set to allow users to post their scores, while my solutions database is read-only. Since I updated these rules, I stopped receiving emails from firebase about my rules.
+
 ### Render on window resize
 If the user resizes the window after loading the image, the magnifying glass component will lose its position relative to the main image.
 
@@ -116,35 +155,34 @@ I learned that React does not have a resize event so we need to `window.addEvent
 
 I combined using React's `useRef()` from [this guide](https://www.pluralsight.com/guides/re-render-react-component-on-window-resize) and the `window.addEventListener()` [guide](https://bobbyhadz.com/blog/react-get-element-width-ref) to find a solution to my issue.
 
-TODO: expand on this
+I discovered that this works if the user uses their mouse to manually resize the window. However, if the user clicks the maximize button or double-clicks the browser's title bar, the magnifying glass component breaks. I have decided to not fix this bug for now.
 
-### Setting a load
-Instead of saving my images in the src folder, I've loaded my images to firebase, creating a URL, and then displaying it on my app. The problem is that my components will render before the image loads. I wanted the image to completely load first and then render the component for a smoother user experience. I found a solution [thanks to this article](https://stackoverflow.com/questions/43115246/how-to-detect-when-a-image-is-loaded-that-is-provided-via-props-and-change-sta).
+### Setting a loading screen
+I've loaded all my images to firebase. This means that each time the user plays the game, they will need to download images from firebase instead of the usual GitHub src folder. The problem is that my components will render before any of the images load. 
 
-### Leaderboard
-https://firebase.google.com/docs/firestore/quickstart?hl=en&authuser=0
+I wanted the image to completely load first and then render the component for a smoother user experience. I found a solution [thanks to this article](https://stackoverflow.com/questions/43115246/how-to-detect-when-a-image-is-loaded-that-is-provided-via-props-and-change-sta).
 
-understanding more about rules to write to my scores collection while only reading the solutions
-```
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-  	match /{document=**} {
-    	allow read;
-    }
-	
-    match /scores/{score} {
-      allow write;
-    }
-  }
-}
+### Firebase leaderboard sort by value
+I wanted my leaderboard scores to be listed in order by time. Instead of downloading and manually sorting the values, [I learned that I can query firebase to give me data sorted!](https://firebase.google.com/docs/database/web/lists-of-data)
+
+In my helper.js, I have a function called `getScores()`. In this function, I have a variable, `q`, that queries for scores from lowest value to highest value:
+```javascript
+const scoresRef = collection(db, `scores-${map}`);
+const q = query(scoresRef, orderBy('score'));
 ```
 
-next TODO is to sort by value: https://firebase.google.com/docs/database/web/lists-of-data
+Then, I use getDocs to get the snapshot:
+```javascript
+const querySnapshot = await getDocs(q);
+```
 
-### Setting a promise
-Must return a promise from function and in the setState, use a .then function to wait for promise to fulfill.
-https://stackoverflow.com/questions/37533929/how-to-return-data-from-promise
+### Reading user scores only returns a promise
+My Rank component has a `useEffect()` that pulls user scores from Firebase. I could not read it because it returned a promise. [I learned how to wait for the promise to fulfill](https://stackoverflow.com/questions/37533929/how-to-return-data-from-promise) by using the `.then` function.
+```javascript
+useEffect(() => {
+  helper.getScores(props.mapName).then((value) => setScores(value));
+}, [props.mapName]);
+```
 
 ## Helpful Notes
 ### Firebase API key is different
